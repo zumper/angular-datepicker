@@ -20,30 +20,6 @@
     }())
     , generateMonthAndYearHeader = function generateMonthAndYearHeader(prevButton, nextButton) {
 
-      if (isMobile) {
-
-        return [
-          '<div class="_720kb-datepicker-calendar-header">',
-            '<div class="_720kb-datepicker-calendar-header-middle _720kb-datepicker-mobile-item _720kb-datepicker-calendar-month">',
-              '<select ng-model="month" title="{{ dateMonthTitle }}" ng-change="selectedMonthHandle(month)">',
-                '<option ng-repeat="item in months" ng-selected="item === month" ng-disabled=\'!isSelectableMaxDate(item + " " + day + ", " + year) || !isSelectableMinDate(item + " " + day + ", " + year)\' ng-value="$index + 1" value="$index + 1">',
-                  '{{ item }}',
-                '</option>',
-              '</select>',
-            '</div>',
-          '</div>',
-          '<div class="_720kb-datepicker-calendar-header">',
-            '<div class="_720kb-datepicker-calendar-header-middle _720kb-datepicker-mobile-item _720kb-datepicker-calendar-month">',
-              '<select ng-model="mobileYear" title="{{ dateYearTitle }}" ng-change="setNewYear(mobileYear)">',
-                '<option ng-repeat="item in paginationYears track by $index" ng-selected="year === item" ng-disabled="!isSelectableMinYear(item) || !isSelectableMaxYear(item)" ng-value="item" value="item">',
-                  '{{ item }}',
-                '</option>',
-              '</select>',
-            '</div>',
-          '</div>'
-        ];
-      }
-
       return [
         '<div class="_720kb-datepicker-calendar-header">',
           '<div class="_720kb-datepicker-calendar-header-left">',
@@ -475,12 +451,6 @@
         };
 
         $scope.setNewYear = function setNewYear(year) {
-
-          //deactivate selected day
-          if (!isMobile) {
-            $scope.day = undefined;
-          }
-
           if ($scope.dateMaxLimit &&
             $scope.year < Number(year)) {
 
@@ -532,21 +502,10 @@
         $scope.paginateYears = function paginateYears(startingYear) {
           var i
            , theNewYears = []
-           , daysToPrepend = 10
-           , daysToAppend = 10;
+           , daysToPrepend = $scope.dateMinLimit ? startingYear - new Date($scope.dateMinLimit).getFullYear() : 10
+           , daysToAppend = 5;
 
           $scope.paginationYears = [];
-          if (isMobile) {
-
-            daysToPrepend = 50;
-            daysToAppend = 50;
-            if ( $scope.dateMinLimit && $scope.dateMaxLimit) {
-
-              startingYear = new Date($scope.dateMaxLimit).getFullYear();
-              daysToPrepend = startingYear - new Date($scope.dateMinLimit).getFullYear();
-              daysToAppend = 1;
-            }
-          }
 
           for (i = daysToPrepend; i > 0; i -= 1) {
 
