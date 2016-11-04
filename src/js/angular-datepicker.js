@@ -599,12 +599,10 @@
         };
 
         $scope.isSelectableMinDate = function isSelectableMinDate(aDate) {
-          //if current date
-          if (!!$scope.dateMinLimit &&
-             !!new Date($scope.dateMinLimit) &&
-             new Date(aDate).getTime() < new Date($scope.dateMinLimit).getTime()) {
-
-            return false;
+          //if current datez//if current date
+          if (!!$scope.dateMinLimit && !!new Date($scope.dateMinLimit)) {
+            var beginningDateMinLimit = new Date($scope.dateMinLimit).setHours(0, 0, 0, 0);
+            return !(new Date(aDate).getTime() < beginningDateMinLimit);
           }
 
           return true;
